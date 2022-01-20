@@ -23,4 +23,14 @@ func main() {
 	}
 
 	fmt.Printf("Avialable Credit: %v\n", credit.AvailableCredit())
+
+	var option payment.PaymentOption
+
+	option = credit
+
+	option.ProcessPayment(500)
+
+	option = payment.CreateCashAccount()
+
+	option.ProcessPayment(500)
 }

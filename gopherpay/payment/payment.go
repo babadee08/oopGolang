@@ -2,9 +2,14 @@ package payment
 
 import (
 	"errors"
+	"fmt"
 	"regexp"
 	"time"
 )
+
+type PaymentOption interface {
+	ProcessPayment(float32) bool
+}
 
 type CreditCard struct {
 	ownerName       string
@@ -23,6 +28,11 @@ func CreateCreditAccount(ownerName, cardNumber string, expMonth, expYear, secCod
 		expirationYear:  expYear,
 		securityCode:    secCode,
 	}
+}
+
+func (c CreditCard) ProcessPayment(amount float32) bool {
+	fmt.Println("Processing a credit card payment...")
+	return true
 }
 
 func (c CreditCard) OwnerName() string {
