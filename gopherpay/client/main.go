@@ -5,6 +5,22 @@ import (
 	"oopGolang/gopherpay/payment"
 )
 
+type CredAcc struct{}
+
+func (c *CredAcc) processPayment(amount float32) {
+	fmt.Println("Processing Cred kard payment...")
+}
+
+func CreateCredAcc(chargeCh chan float32) *CredAcc {
+	credAcc := &CredAcc{}
+	go func(chargeCh chan float32) {
+		for amount := range chargeCh {
+			credAcc.processPayment(amount)
+		}
+	}(chargeCh)
+	return credAcc
+}
+
 func main() {
 
 	credit := payment.CreateCreditAccount(
@@ -33,4 +49,13 @@ func main() {
 	option = payment.CreateCashAccount()
 
 	option.ProcessPayment(500)
+
+	chargeCh := make(chan float32)
+	CreateCredAcc(chargeCh)
+	chargeCh <- 500
+	var a string
+	_, err = fmt.Scanln(&a)
+	if err != nil {
+		return
+	}
 }
