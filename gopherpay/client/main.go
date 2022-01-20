@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"oopGolang/gopherpay/account"
+	"oopGolang/gopherpay/paybroker"
 	"oopGolang/gopherpay/payment"
 )
 
@@ -20,6 +21,10 @@ func CreateCredAcc(chargeCh chan float32) *CredAcc {
 		}
 	}(chargeCh)
 	return credAcc
+}
+
+type PaymentOption interface {
+	ProcessPayment(float32) bool
 }
 
 func main() {
@@ -41,7 +46,7 @@ func main() {
 
 	fmt.Printf("Avialable Credit: %v\n", credit.AvailableCredit())
 
-	var option payment.PaymentOption
+	var option PaymentOption
 
 	option = credit
 
@@ -49,6 +54,9 @@ func main() {
 
 	option = payment.CreateCashAccount()
 
+	option.ProcessPayment(500)
+
+	option = &paybroker.PaymentBrokerAccount{}
 	option.ProcessPayment(500)
 
 	chargeCh := make(chan float32)
