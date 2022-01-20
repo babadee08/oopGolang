@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"oopGolang/gopherpay/account"
 	"oopGolang/gopherpay/payment"
 )
 
@@ -53,6 +54,14 @@ func main() {
 	chargeCh := make(chan float32)
 	CreateCredAcc(chargeCh)
 	chargeCh <- 500
+
+	ca := account.CreditAccount{}
+	ca.AvailableFunds()
+	ca.ProcessPayment(500)
+
+	ha := account.HybridAcc{}
+	ha.AvailableFunds()
+
 	var a string
 	_, err = fmt.Scanln(&a)
 	if err != nil {
